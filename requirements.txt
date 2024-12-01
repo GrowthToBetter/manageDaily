@@ -4,4 +4,4 @@ gunicorn
 whitenoise
 python-dotenv
 django-cloudinary-storage
-csp
+django_csp 
