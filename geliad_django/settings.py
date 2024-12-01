@@ -121,13 +121,13 @@ TEMPLATES = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://web-production-f6483.up.railway.app',
+    'https://managedaily-production.up.railway.app',
     'http://localhost',
 ]
 
 
 WSGI_APPLICATION = 'geliad_django.wsgi.application'
-ALLOWED_HOSTS = ['web-production-f6483.up.railway.app','localhost']
+ALLOWED_HOSTS = ['managedaily-production.up.railway.app','localhost']
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
