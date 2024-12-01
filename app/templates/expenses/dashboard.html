@@ -1,0 +1,115 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <!-- Dashboard Header -->
+    <div class="col-12 text-center">
+      <h1 class="mb-4 animate__animated animate__fadeInDown">Dashboard</h1>
+      <p class="lead animate__animated animate__fadeIn">
+        Total Expenses: <strong>${{ total_expense }}</strong>
+      </p>
+    </div>
+
+    <!-- Expense Table -->
+    <div class="col-md-8">
+      <div class="table-responsive">
+        <table
+          class="table table-bordered table-hover animate__animated animate__fadeInLeft">
+          <thead class="table-primary">
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Notes</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="expenseTable">
+            {% for expense in expenses %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ expense.title }}</td>
+              <td>{{ expense.get_category_display }}</td>
+              <td>${{ expense.amount }}</td>
+              <td>{{ expense.date }}</td>
+              <td>{{ expense.notes|default:"-" }}</td>
+              <td>
+                <div>
+                  <!-- Tombol Edit dengan data terkait -->
+                  <a
+                    class="btn btn-primary btn-edit"
+                    data-id="{{ expense.id }}"
+                    data-title="{{ expense.title }}"
+                    data-category="{{ expense.category }}"
+                    data-amount="{{ expense.amount }}"
+                    data-date="{{ expense.date }}"
+                    data-notes="{{ expense.notes|default:'' }}"
+                    href="{% url "edit_expense" expense.id %}">
+                    Edit
+                  </a>
+                  <a
+                    href="{% url "delete_expense" expense.id %}"
+                    class="btn btn-danger btn-delete"
+                    data-id="{{ expense.id }}"
+                    data-title="{{ expense.title }}"
+                    data-category="{{ expense.category }}"
+                    data-amount="{{ expense.amount }}"
+                    data-date="{{ expense.date }}"
+                    data-notes="{{ expense.notes|default:'' }}">
+                    Delete
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="7" class="text-center">No expenses recorded yet.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Summary Section -->
+    <div class="col-md-4">
+      <div class="card animate__animated animate__fadeInRight">
+        <div class="card-header bg-primary text-white">Summary by Category</div>
+        <div class="card-body">
+          <ul class="list-group">
+            {% for category in categories %}
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center">
+              {{ category.category }}
+              <span class="badge bg-primary rounded-pill"
+                >${{ category.total }}</span
+              >
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="mt-4 animate__animated animate__zoomIn">
+        <a href="{% url 'add_expense' %}" class="btn btn-success w-100"
+          >Add New Expense</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div
+  id="toastContainer"
+  class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+{% endblock %}
+
+<!-- Include Animate.css -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
